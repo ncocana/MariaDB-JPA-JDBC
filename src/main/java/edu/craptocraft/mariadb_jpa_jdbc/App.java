@@ -1,15 +1,15 @@
 package edu.craptocraft.mariadb_jpa_jdbc;
 
-import edu.craptocraft.mariadb_jpa_jdbc.database.programming_language.crud.CRUD;
+import edu.craptocraft.mariadb_jpa_jdbc.service.ProgrammingLanguageService;
 
 public class App {
- 
+
     public static void main(String[] args) {
         try {
-            CRUD.createProgrammingLanguages();
-            CRUD.printProgrammingLanguages();
+            ProgrammingLanguageService.createData();
+            ProgrammingLanguageService.readData();
         } finally {
-            CRUD.shutdownDatabase();;
+            ProgrammingLanguageService.shutdownDatabase();
         }
     }
 

@@ -1,18 +1,17 @@
-package edu.craptocraft.mariadb_jpa_jdbc.database.programming_language.crud;
+package edu.craptocraft.mariadb_jpa_jdbc.service;
 
 import java.util.Arrays;
 import java.util.List;
 
-import edu.craptocraft.mariadb_jpa_jdbc.jpa_service.JPAService;
-import edu.craptocraft.mariadb_jpa_jdbc.database.programming_language.ProgrammingLanguage;
+import edu.craptocraft.mariadb_jpa_jdbc.entity.ProgrammingLanguage;
 
-public class CRUD {
-    
+public class ProgrammingLanguageService {
+
     private static final JPAService jpaService = JPAService.getInstance();
 
-    private CRUD() {}
- 
-    public static void createProgrammingLanguages() {
+    private ProgrammingLanguageService() {}
+
+    public static void createData() {
         jpaService.runInTransaction(entityManager -> {
             Arrays.stream("Java,C++,C#,JavaScript,Rust,Go,Python,PHP".split(","))
                     .map(name -> new ProgrammingLanguage(name, (int) (Math.random() * 10)))
@@ -21,7 +20,7 @@ public class CRUD {
         });
     }
 
-    public static void printProgrammingLanguages() {
+    public static void readData() {
         List<ProgrammingLanguage> programmingLanguages = jpaService.runInTransaction(entityManager ->
                 entityManager.createQuery(
                         "select p from ProgrammingLanguage p",

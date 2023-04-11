@@ -15,26 +15,33 @@ public class ProgrammingLanguage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pl_id")
+    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "pl_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "pl_rating")
-    private Integer rating;
+    @Column(name = "user_rating")
+    private Integer userRating;
 
-    public ProgrammingLanguage() {}
+    @Column(name = "dev_rating")
+    private Integer devRating;
 
-    public ProgrammingLanguage(String name, Integer rating) {
+    public ProgrammingLanguage() {
+    }
+
+    public ProgrammingLanguage(String name, Integer userRating, Integer devRating) {
         this.name = name;
-        this.rating = rating;
+        this.userRating = userRating;
+        this.devRating = devRating;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         ProgrammingLanguage that = (ProgrammingLanguage) o;
         return Objects.equals(id, that.id);
     }
@@ -60,12 +67,20 @@ public class ProgrammingLanguage {
         this.name = name;
     }
 
-    public Integer getRating() {
-        return rating;
+    public Integer getUserRating() {
+        return userRating;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setUserRating(Integer userRating) {
+        this.userRating = userRating;
+    }
+
+    public Integer getDevRating() {
+        return devRating;
+    }
+
+    public void setDevRating(Integer devRating) {
+        this.devRating = devRating;
     }
 
 }

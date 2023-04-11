@@ -41,6 +41,10 @@ public class Database {
         System.out.println("Connection status: " + connection.isValid(0));
     }
 
+    public static Connection getConnection() {
+        return connection;
+    }
+
     public static void closeDatabaseConnection() throws SQLException {
         System.out.println("Closing connection...");
         connection.close();

@@ -35,32 +35,19 @@
     <jaxb.version>3.0.0</jaxb.version>
     <slf4j.version>2.0.7</slf4j.version>
     <hikari.version>5.0.0</hikari.version>
-
   </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.mariadb.jdbc</groupId>
       <artifactId>mariadb-java-client</artifactId>
       <version>${mariadb.version}</version>
     </dependency>
-
-    <!-- Extra Dependency for pool connections-->
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-      <version>${hikari.version}</version>
-    </dependency>
-
-
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>${slf4j.version}</version>
-      <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>jakarta.persistence</groupId>
       <artifactId>jakarta.persistence-api</artifactId>
@@ -129,7 +116,7 @@
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
-                <mainClass>edu.craptocraft.romansgohome</mainClass>
+                <mainClass>edu.craptocraft.mariadb_jpa_jdbc</mainClass>
               </manifest>
               <manifestEntries>
                 <url>${project.url}</url>

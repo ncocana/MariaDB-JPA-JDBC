@@ -1,9 +1,10 @@
 package edu.craptocraft.mariadb_jpa_jdbc.service;
 
-import java.util.Arrays;
 import java.util.List;
 
 import edu.craptocraft.mariadb_jpa_jdbc.entity.ProgrammingLanguage;
+import edu.craptocraft.mariadb_jpa_jdbc.entity.DeveloperRating;
+import edu.craptocraft.mariadb_jpa_jdbc.entity.UserRating;
 
 public class ProgrammingLanguageService {
 
@@ -12,31 +13,36 @@ public class ProgrammingLanguageService {
     private ProgrammingLanguageService() {
     }
 
-    public static void createData() {
+    // Create and persist a new ProgrammingLanguage entity.
+    public static void createData(String name, UserRating userRating, DeveloperRating devRating) {
         jpaService.runInTransaction(entityManager -> {
-            Arrays.stream("Java,C++,C#,JavaScript,Rust,Go,Python,PHP".split(","))
-                    .map(name -> new ProgrammingLanguage(name, (int) (Math.random() * 10),
-                            (int) ((Math.random() * 10))))
-                    .forEach(entityManager::persist);
+            ProgrammingLanguage language = new ProgrammingLanguage();
+            language.setName(name);
+            language.setUserRating(userRating);
+            language.setDevRating(devRating);
+
+            entityManager.persist(language);
+
             return null;
         });
     }
 
-    public static void readData() {
-        StringBuilder programmingData = new StringBuilder();
+    // Read data from the ProgrammingLanguage entity.
+    public static String readData() {
         List<ProgrammingLanguage> programmingLanguages = jpaService
                 .runInTransaction(entityManager -> entityManager.createQuery(
                         "select p from ProgrammingLanguage p",
                         ProgrammingLanguage.class).getResultList());
 
+        StringBuilder programmingData = new StringBuilder();
         programmingLanguages.stream()
-                .map(pl -> "\nProgramming Language name: " + pl.getName() + "\nUser Rating: " + pl.getUserRating()
-                        + "\nDeveloper Rating: " + pl.getDevRating() + "\n")
+                .map(Object::toString)
                 .forEach(programmingData::append);
 
-        System.out.print(programmingData.toString());
+        return programmingData.toString();
     }
 
+    // Close the instance associated with the service.
     public static void shutdownDatabase() {
         jpaService.shutdown();
     }

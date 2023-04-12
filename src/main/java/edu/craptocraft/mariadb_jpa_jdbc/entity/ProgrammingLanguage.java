@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.util.Objects;
@@ -21,16 +23,18 @@ public class ProgrammingLanguage {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "user_rating")
-    private Integer userRating;
+    @ManyToOne
+    @JoinColumn(name = "user_rating")
+    private UserRating userRating;
 
-    @Column(name = "dev_rating")
-    private Integer devRating;
+    @ManyToOne
+    @JoinColumn(name = "dev_rating")
+    private DeveloperRating devRating;
 
     public ProgrammingLanguage() {
     }
 
-    public ProgrammingLanguage(String name, Integer userRating, Integer devRating) {
+    public ProgrammingLanguage(String name, UserRating userRating, DeveloperRating devRating) {
         this.name = name;
         this.userRating = userRating;
         this.devRating = devRating;
@@ -67,20 +71,26 @@ public class ProgrammingLanguage {
         this.name = name;
     }
 
-    public Integer getUserRating() {
+    public UserRating getUserRating() {
         return userRating;
     }
 
-    public void setUserRating(Integer userRating) {
+    public void setUserRating(UserRating userRating) {
         this.userRating = userRating;
     }
 
-    public Integer getDevRating() {
+    public DeveloperRating getDevRating() {
         return devRating;
     }
 
-    public void setDevRating(Integer devRating) {
+    public void setDevRating(DeveloperRating devRating) {
         this.devRating = devRating;
+    }
+
+    @Override
+    public String toString() {
+        return "\n\tProgramming Language: " + this.getName() + "\n\tUser Rating: " + this.getUserRating().getRating()
+        + "\n\tDeveloper Rating: " + this.getDevRating().getRating() + "\n";
     }
 
 }

@@ -14,16 +14,27 @@ public class App {
             UserRatingService.createData();
             System.out.println("\nUser rating:\n");
             System.out.println(UserRatingService.readData());
-            
+
             DeveloperRatingService.createData();
             System.out.println("\nDeveloper rating:\n");
             System.out.println(DeveloperRatingService.readData());
 
-            ProgrammingLanguageService.createData("Java", UserRatingService.getDataRating(8), DeveloperRatingService.getDataRating(9));
-            ProgrammingLanguageService.createData("C++", UserRatingService.getDataRating(7), DeveloperRatingService.getDataRating(8));
-            ProgrammingLanguageService.createData("C#", UserRatingService.getDataRating(6), DeveloperRatingService.getDataRating(7));
-            ProgrammingLanguageService.createData("JavaScript", UserRatingService.getDataRating(9), DeveloperRatingService.getDataRating(9));
+            ProgrammingLanguageService.createData("Java", UserRatingService.getDataRating(8),
+                    DeveloperRatingService.getDataRating(9));
+            ProgrammingLanguageService.createData("C++", UserRatingService.getDataRating(7),
+                    DeveloperRatingService.getDataRating(8));
+            ProgrammingLanguageService.createData("C#", UserRatingService.getDataRating(6),
+                    DeveloperRatingService.getDataRating(7));
+            ProgrammingLanguageService.createData("JavaScript", UserRatingService.getDataRating(9),
+                    DeveloperRatingService.getDataRating(9));
             System.out.println("Programming Languages:");
+            System.out.println(ProgrammingLanguageService.readData());
+
+            ProgrammingLanguageService.updateData(3, "XML", UserRatingService.getDataRating(9),
+                    DeveloperRatingService.getDataRating(8));
+            System.out.println(ProgrammingLanguageService.readData());
+
+            ProgrammingLanguageService.deleteData(3);
             System.out.println(ProgrammingLanguageService.readData());
         } finally {
             UserRatingService.shutdownDatabase();

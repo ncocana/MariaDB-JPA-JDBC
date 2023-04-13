@@ -42,6 +42,37 @@ public class ProgrammingLanguageService {
         return programmingData.toString();
     }
 
+    public static void updateData(int id, String newLanguage, UserRating newUserRating,
+            DeveloperRating newDeveloperRating) {
+        jpaService.runInTransaction(entityManager -> {
+            ProgrammingLanguage language = entityManager.find(ProgrammingLanguage.class, id);
+
+            if (language != null) {
+                language.setName(newLanguage);
+                language.setUserRating(newUserRating);
+                language.setDevRating(newDeveloperRating);
+
+                System.out.println("Data updated!");
+            }
+
+            return null;
+        });
+
+    }
+
+    public static void deleteData(int id) {
+        jpaService.runInTransaction(entityManager -> {
+            ProgrammingLanguage language = entityManager.find(ProgrammingLanguage.class, id);
+
+            if (language != null) {
+                entityManager.remove(language);
+                System.out.println("Language deleted!");
+            }
+            return null;
+
+        });
+    }
+
     // Close the instance associated with the service.
     public static void shutdownDatabase() {
         jpaService.shutdown();

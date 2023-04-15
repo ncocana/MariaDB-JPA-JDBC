@@ -2,6 +2,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>edu.craptocraft.mariadb_jpa_jdbc</groupId>
   <artifactId>mariadb_jpa_jdbc</artifactId>
   <packaging>jar</packaging>
@@ -9,10 +10,11 @@
   <name>mariadb_jpa_jdbc</name>
   <url>https://github.com/ncocana/MariaDB-JPA-JDBC</url>
   <properties>
+    <java.version>19</java.version>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>19</maven.compiler.source>
+    <maven.compiler.target>19</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
@@ -29,25 +31,25 @@
     <report.version>3.4.2</report.version>
     <resources.version>3.3.0</resources.version>
     <site.version>4.0.0-M5</site.version>
-    <mariadb.version>LATEST</mariadb.version>
+    <!-- <mariadb.version>LATEST</mariadb.version> -->
     <jakarta.version>3.0.0</jakarta.version>
     <hibernate.version>5.6.4.Final</hibernate.version>
     <jaxb.version>3.0.0</jaxb.version>
-    <slf4j.version>2.0.7</slf4j.version>
+    <!-- <slf4j.version>2.0.7</slf4j.version> -->
     <hikari.version>5.0.0</hikari.version>
   </properties>
   <dependencies>
-    <dependency>
+    <!-- <dependency>
       <groupId>org.mariadb.jdbc</groupId>
       <artifactId>mariadb-java-client</artifactId>
       <version>${mariadb.version}</version>
-    </dependency>
+    </dependency> -->
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
-    <dependency>
+    <!-- <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>${slf4j.version}</version>
-    </dependency>
+    </dependency> -->
     <dependency>
       <groupId>jakarta.persistence</groupId>
       <artifactId>jakarta.persistence-api</artifactId>
@@ -80,6 +82,39 @@
       <artifactId>assertj-core</artifactId>
       <version>${assertj.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <version>3.0.5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>3.0.5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <version>3.0.5</version>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>3.0.5</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mariadb.jdbc</groupId>
+      <artifactId>mariadb-java-client</artifactId>
+      <version>2.7.3</version>
+    </dependency>
+
   </dependencies>
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to
@@ -177,6 +212,10 @@
             <allowMajorUpdates>true</allowMajorUpdates>
             <allowSnapshots>false</allowSnapshots>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
         </plugin>
       </plugins>
     </pluginManagement>

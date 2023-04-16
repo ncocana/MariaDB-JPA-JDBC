@@ -1,10 +1,10 @@
 package edu.craptocraft.mariadb_jpa_jdbc;
 
-import edu.craptocraft.mariadb_jpa_jdbc.service.DeveloperRatingService;
-import edu.craptocraft.mariadb_jpa_jdbc.service.ProgrammingLanguageService;
-import edu.craptocraft.mariadb_jpa_jdbc.service.UserRatingService;
+import edu.craptocraft.mariadb_jpa_jdbc.service.jpa.DeveloperRatingService;
+import edu.craptocraft.mariadb_jpa_jdbc.service.jpa.ProgrammingLanguageService;
+import edu.craptocraft.mariadb_jpa_jdbc.service.jpa.UserRatingService;
 
-public class App {
+public class AppJPA {
 
     public static void main(String[] args) {
 

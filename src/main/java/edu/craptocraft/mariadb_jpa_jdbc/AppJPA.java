@@ -1,7 +1,7 @@
 package edu.craptocraft.mariadb_jpa_jdbc;
 
 import edu.craptocraft.mariadb_jpa_jdbc.service.jpa.DeveloperRatingService;
-import edu.craptocraft.mariadb_jpa_jdbc.service.jpa.ProgrammingLanguageService;
+import edu.craptocraft.mariadb_jpa_jdbc.service.jpa.ProgrammingLanguageServiceJPA;
 import edu.craptocraft.mariadb_jpa_jdbc.service.jpa.UserRatingService;
 
 public class AppJPA {
@@ -22,27 +22,27 @@ public class AppJPA {
             System.out.println(DeveloperRatingService.readData());
 
             // Creates the table "programming_language" and inserts data in it.
-            ProgrammingLanguageService.createData("Java", 8, 9);
-            ProgrammingLanguageService.createData("C++", 7, 8);
-            ProgrammingLanguageService.createData("C#", 6, 7);
-            ProgrammingLanguageService.createData("JavaScript", 9, 9);
+            ProgrammingLanguageServiceJPA.createData("Java", 8, 9);
+            ProgrammingLanguageServiceJPA.createData("C++", 7, 8);
+            ProgrammingLanguageServiceJPA.createData("C#", 6, 7);
+            ProgrammingLanguageServiceJPA.createData("JavaScript", 9, 9);
 
             // Shows the data in the table "programming_language".
             System.out.println("Programming Languages:");
-            System.out.println(ProgrammingLanguageService.readData());
+            System.out.println(ProgrammingLanguageServiceJPA.readData());
 
             // Updates the data in the table "programming_language" and shows the updated data.
-            ProgrammingLanguageService.updateData(3, "XML", 9, 8);
-            System.out.println(ProgrammingLanguageService.readData());
+            ProgrammingLanguageServiceJPA.updateData(3, "XML", 9, 8);
+            System.out.println(ProgrammingLanguageServiceJPA.readData());
 
             // Deletes the data in the table "programming_language" and shows the updated data.
-            ProgrammingLanguageService.deleteData(3);
-            System.out.println(ProgrammingLanguageService.readData());
+            ProgrammingLanguageServiceJPA.deleteData(3);
+            System.out.println(ProgrammingLanguageServiceJPA.readData());
         } finally {
             // Closes the instances of each service connecting to the database.
             UserRatingService.shutdownDatabase();
             DeveloperRatingService.shutdownDatabase();
-            ProgrammingLanguageService.shutdownDatabase();
+            ProgrammingLanguageServiceJPA.shutdownDatabase();
         }
 
     }

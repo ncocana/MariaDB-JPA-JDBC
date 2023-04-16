@@ -1,4 +1,4 @@
-package edu.craptocraft.mariadb_jpa_jdbc.service;
+package edu.craptocraft.mariadb_jpa_jdbc.service.jpa;
 
 import java.util.List;
 
@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.craptocraft.mariadb_jpa_jdbc.entity.ProgrammingLanguage;
 
-public class ProgrammingLanguageService {
+public class ProgrammingLanguageServiceJPA {
 
     @Autowired
     private static final JPAService jpaService = JPAService.getInstance();
 
-    private ProgrammingLanguageService() {
+    private ProgrammingLanguageServiceJPA() {
     }
 
     // Create and persist a new ProgrammingLanguage entity.

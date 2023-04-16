@@ -1,4 +1,4 @@
-package edu.craptocraft.mariadb_jpa_jdbc.service;
+package edu.craptocraft.mariadb_jpa_jdbc.service.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

@@ -11,32 +11,35 @@ public class App {
         try {
             System.out.println("JPA SERVICE");
 
+            // Creates the table "user_rating" and inserts data in it.
             UserRatingService.createData();
             System.out.println("\nUser rating:\n");
             System.out.println(UserRatingService.readData());
 
+            // Creates the table "dev_rating" and inserts data in it.
             DeveloperRatingService.createData();
             System.out.println("\nDeveloper rating:\n");
             System.out.println(DeveloperRatingService.readData());
 
-            ProgrammingLanguageService.createData("Java", UserRatingService.getDataRating(8),
-                            DeveloperRatingService.getDataRating(9));
-            ProgrammingLanguageService.createData("C++", UserRatingService.getDataRating(7),
-                            DeveloperRatingService.getDataRating(8));
-            ProgrammingLanguageService.createData("C#", UserRatingService.getDataRating(6),
-                            DeveloperRatingService.getDataRating(7));
-            ProgrammingLanguageService.createData("JavaScript", UserRatingService.getDataRating(9),
-                            DeveloperRatingService.getDataRating(9));
+            // Creates the table "programming_language" and inserts data in it.
+            ProgrammingLanguageService.createData("Java", 8, 9);
+            ProgrammingLanguageService.createData("C++", 7, 8);
+            ProgrammingLanguageService.createData("C#", 6, 7);
+            ProgrammingLanguageService.createData("JavaScript", 9, 9);
+
+            // Shows the data in the table "programming_language".
             System.out.println("Programming Languages:");
             System.out.println(ProgrammingLanguageService.readData());
 
-            ProgrammingLanguageService.updateData(4, "XML", UserRatingService.getDataRating(9),
-                            DeveloperRatingService.getDataRating(8));
+            // Updates the data in the table "programming_language" and shows the updated data.
+            ProgrammingLanguageService.updateData(3, "XML", 9, 8);
             System.out.println(ProgrammingLanguageService.readData());
 
-            ProgrammingLanguageService.deleteData(4);
+            // Deletes the data in the table "programming_language" and shows the updated data.
+            ProgrammingLanguageService.deleteData(3);
             System.out.println(ProgrammingLanguageService.readData());
         } finally {
+            // Closes the instances of each service connecting to the database.
             UserRatingService.shutdownDatabase();
             DeveloperRatingService.shutdownDatabase();
             ProgrammingLanguageService.shutdownDatabase();

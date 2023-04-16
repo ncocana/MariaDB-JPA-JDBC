@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.craptocraft.mariadb_jpa_jdbc.entity.ProgrammingLanguage;
-import edu.craptocraft.mariadb_jpa_jdbc.entity.DeveloperRating;
-import edu.craptocraft.mariadb_jpa_jdbc.entity.UserRating;
 
 public class ProgrammingLanguageService {
 
@@ -17,12 +15,12 @@ public class ProgrammingLanguageService {
     }
 
     // Create and persist a new ProgrammingLanguage entity.
-    public static void createData(String name, UserRating userRating, DeveloperRating devRating) {
+    public static void createData(String name, Integer userRating, Integer devRating) {
         jpaService.runInTransaction(entityManager -> {
             ProgrammingLanguage language = new ProgrammingLanguage();
             language.setName(name);
-            language.setUserRating(userRating);
-            language.setDevRating(devRating);
+            language.setUserRating(UserRatingService.getDataRating(userRating));
+            language.setDevRating(DeveloperRatingService.getDataRating(devRating));
 
             entityManager.persist(language);
 
@@ -45,15 +43,15 @@ public class ProgrammingLanguageService {
         return programmingData.toString();
     }
 
-    public static void updateData(int id, String newLanguage, UserRating newUserRating,
-            DeveloperRating newDeveloperRating) {
+    // Update data from the ProgrammingLanguage entity.
+    public static void updateData(Integer id, String newLanguage, Integer newUserRating, Integer newDeveloperRating) {
         jpaService.runInTransaction(entityManager -> {
             ProgrammingLanguage language = entityManager.find(ProgrammingLanguage.class, id);
 
             if (language != null) {
                 language.setName(newLanguage);
-                language.setUserRating(newUserRating);
-                language.setDevRating(newDeveloperRating);
+                language.setUserRating(UserRatingService.getDataRating(newUserRating));
+                language.setDevRating(DeveloperRatingService.getDataRating(newDeveloperRating));
 
                 System.out.println("Data updated!");
             }
@@ -63,7 +61,8 @@ public class ProgrammingLanguageService {
 
     }
 
-    public static void deleteData(int id) {
+    // Delete data from the ProgrammingLanguage entity.
+    public static void deleteData(Integer id) {
         jpaService.runInTransaction(entityManager -> {
             ProgrammingLanguage language = entityManager.find(ProgrammingLanguage.class, id);
 

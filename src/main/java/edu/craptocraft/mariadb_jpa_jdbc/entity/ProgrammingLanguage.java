@@ -11,6 +11,9 @@ import jakarta.persistence.Table;
 
 import java.util.Objects;
 
+import edu.craptocraft.mariadb_jpa_jdbc.service.springboot.implementation.DevRatingIMPL;
+import edu.craptocraft.mariadb_jpa_jdbc.service.springboot.implementation.UserRatingIMPL;
+
 @Entity
 @Table(name = "programming_language")
 public class ProgrammingLanguage {
@@ -18,7 +21,7 @@ public class ProgrammingLanguage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private int id;
 
     @Column(name = "name")
     private String name;
@@ -32,6 +35,12 @@ public class ProgrammingLanguage {
     private DeveloperRating devRating;
 
     public ProgrammingLanguage() {
+    }
+
+    public ProgrammingLanguage(String name, int userRating, int devRating) {
+        this.name = name;
+        this.userRating = UserRatingIMPL.getUserRatingById(userRating);
+        this.devRating = DevRatingIMPL.getDeveloperRatingById(devRating);
     }
 
     public ProgrammingLanguage(String name, UserRating userRating, DeveloperRating devRating) {
@@ -49,17 +58,17 @@ public class ProgrammingLanguage {
         ProgrammingLanguage that = (ProgrammingLanguage) o;
         return Objects.equals(id, that.id);
     }
-
+    
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

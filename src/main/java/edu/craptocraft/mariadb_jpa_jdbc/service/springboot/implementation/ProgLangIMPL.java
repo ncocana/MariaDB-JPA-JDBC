@@ -1,4 +1,4 @@
-package edu.craptocraft.mariadb_jpa_jdbc.service.Implementation;
+package edu.craptocraft.mariadb_jpa_jdbc.service.springboot.implementation;
 
 import java.util.List;
 
@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import edu.craptocraft.mariadb_jpa_jdbc.entity.ProgrammingLanguage;
 import edu.craptocraft.mariadb_jpa_jdbc.repository.ProgrammingLanguageRepo;
-import edu.craptocraft.mariadb_jpa_jdbc.service.ProgrammingLanguageServices;
+import edu.craptocraft.mariadb_jpa_jdbc.service.springboot.ProgrammingLanguageService;
 
 @Service
-public class PLIMPL implements ProgrammingLanguageServices {
+public class ProgLangIMPL implements ProgrammingLanguageService {
 
     @Autowired
     private ProgrammingLanguageRepo repo;
@@ -32,11 +32,15 @@ public class PLIMPL implements ProgrammingLanguageServices {
 
     @Override
     public ProgrammingLanguage readData(int id) {
-        return this.repo.findById(id).get();
+        return this.repo.findById(id).orElse(null);
     }
 
     @Override
-    public ProgrammingLanguage updateData(ProgrammingLanguage language) {
+    public ProgrammingLanguage updateData(int id, ProgrammingLanguage language) {
+        language.setId(id);
+        language.setName(language.getName());
+        language.setDevRating(language.getDevRating());
+        language.setUserRating(language.getUserRating());
         return this.repo.save(language);
     }
 

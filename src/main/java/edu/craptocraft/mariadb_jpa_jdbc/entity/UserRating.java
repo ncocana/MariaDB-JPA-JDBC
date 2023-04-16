@@ -13,7 +13,7 @@ public class UserRating {
     
     @Id
     @Column(name = "rating")
-    private Integer rating;
+    private int rating;
 
     @Column(name = "rating_comment")
     private String ratingComment;
@@ -21,7 +21,11 @@ public class UserRating {
     public UserRating() {
     }
 
-    public UserRating(Integer rating, String ratingComment) {
+    public UserRating(int rating) {
+        this.rating = rating;
+    }
+
+    public UserRating(int rating, String ratingComment) {
         this.rating = rating;
         this.ratingComment = ratingComment;
     }
@@ -41,11 +45,11 @@ public class UserRating {
         return Objects.hash(rating);
     }
 
-    public Integer getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 

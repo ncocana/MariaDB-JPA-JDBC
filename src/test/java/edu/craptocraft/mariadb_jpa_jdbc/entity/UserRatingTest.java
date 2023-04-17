@@ -1,6 +1,7 @@
 package edu.craptocraft.mariadb_jpa_jdbc.entity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 import org.junit.Before;

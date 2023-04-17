@@ -1,6 +1,9 @@
 package edu.craptocraft.mariadb_jpa_jdbc.controller;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -63,7 +66,7 @@ public class ProgLangControllerTest {
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        List<ProgrammingLanguage> languages = (List<ProgrammingLanguage>) response.getBody();
+        List<?> languages = (List<?>) response.getBody();
         assertNotNull(languages);
         assertTrue(languages.size() > 0);
 
@@ -137,7 +140,7 @@ public class ProgLangControllerTest {
 
         ResponseEntity<?> beforeDeleteResponse = controller.getAllLanguages();
 
-        List<ProgrammingLanguage> beforeDeleteLanguages = (List<ProgrammingLanguage>) beforeDeleteResponse.getBody();
+        List<?> beforeDeleteLanguages = (List<?>) beforeDeleteResponse.getBody();
 
         assertNotNull(beforeDeleteLanguages);
 
@@ -153,7 +156,7 @@ public class ProgLangControllerTest {
 
         ResponseEntity<?> afterDeleteResponse = controller.getAllLanguages();
 
-        List<ProgrammingLanguage> afterDeleteLanguages = (List<ProgrammingLanguage>) afterDeleteResponse.getBody();
+        List<?> afterDeleteLanguages = (List<?>) afterDeleteResponse.getBody();
 
         assertNotNull(afterDeleteLanguages);
 

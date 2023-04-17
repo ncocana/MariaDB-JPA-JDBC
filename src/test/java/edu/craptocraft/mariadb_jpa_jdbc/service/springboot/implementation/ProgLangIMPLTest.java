@@ -2,8 +2,8 @@ package edu.craptocraft.mariadb_jpa_jdbc.service.springboot.implementation;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,15 +56,17 @@ public class ProgLangIMPLTest {
 
     @Test
     public void testReadDataById() {
+
         ProgrammingLanguage language = new ProgrammingLanguage();
 
-        language.setId(5);
-        language.setName("Rust");
+        language.setId(7);
+        language.setName("Ruby");
         language.setUserRating(new UserRating(8));
         language.setDevRating(new DeveloperRating(8));
-        repo.save(language);
 
-        ProgrammingLanguage retrievedLanguage = progLangImpl.readData(5);
+        ProgrammingLanguage createdLanguage = repo.save(language);
+
+        ProgrammingLanguage retrievedLanguage = progLangImpl.readData(createdLanguage.getId());
 
         assertNotNull(retrievedLanguage);
         assertEquals(language.getId(), retrievedLanguage.getId());

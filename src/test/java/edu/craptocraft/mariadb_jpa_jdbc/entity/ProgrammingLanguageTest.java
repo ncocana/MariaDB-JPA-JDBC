@@ -2,14 +2,14 @@ package edu.craptocraft.mariadb_jpa_jdbc.entity;
 
 import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.Before;
 import org.junit.Test;
 
 public class ProgrammingLanguageTest {
 
     private ProgrammingLanguage programmingLanguage;
 
-    @BeforeEach
+    @Before
     public void setUp() {
 
         UserRating userRating = new UserRating(6);

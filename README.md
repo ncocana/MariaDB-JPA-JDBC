@@ -85,9 +85,11 @@ You will need to have already installed: `Git`, `Java 19`, `Maven`, and `MariaDB
 
 ### AppJPA in the terminal
 
-As its use have already been explained above, all that remains to know is how to configure the database connection. For this, you will need to go to the `persistance.xml` file, where you can configure the user's name, password, the database's name, and its action upon executing the `AppJPA.java` file (for default, it's configured to drop and create the database anew; if you wish to just create the database, you will need to change it to `create`).   
+As its use have already been explained above, all that remains to know is how to configure the database connection. For this, you will need to go to the `persistance.xml` file in `src/main/resources/META-INF` folder, where you can configure the user's name, password, URL for the MariaDB database connection, its action upon executing the `AppJPA.java` file (for default, it's configured to drop and create the database anew; if you wish to just create the database, you will need to change it to `create`), and similar.   
 
 ### AppSpringBoot in Postman and Endpoints
+
+To configure the user's name, password, URL for the MariaDB database connection, and such, you will need to go to the `application.properties` file in `src/main/resources` folder.   
 
 You can test the endpoints in Postman:   
 
@@ -96,6 +98,10 @@ You can test the endpoints in Postman:
 #### Create
 
 Creates an item in the `programming_language` table. `create` can be used with or without especifying the ID, as even if you don't, the application is configured to automatically assign an ID to the item created.   
+
+```
+http://127.0.0.1:8080/programming-languages/create
+```
 
 ![Endpoint create without ID](./docs/endpoint_create_without_id.png)   
 
@@ -109,11 +115,19 @@ If this bothers you, you can avoid it assign an ID before creating the item. How
 
 Gets all the items in the `programming_language` table.   
 
+```
+http://127.0.0.1:8080/programming-languages/get/all
+```
+
 ![Endpoint get all](./docs/endpoint_get_all.png)   
 
 #### Get one
 
 Gets the item especified from the `programming_language` table.   
+
+```
+http://127.0.0.1:8080/programming-languages/get/{id}
+```
 
 ![Endpoint get one](./docs/endpoint_get_one.png) 
 
@@ -121,10 +135,18 @@ Gets the item especified from the `programming_language` table.
 
 Updates the item especified from the `programming_language` table. You will need to specify the data updated in the Request Body.   
 
+```
+http://127.0.0.1:8080/programming-languages/update/{id}
+```
+
 ![Endpoint update](./docs/endpoint_update.png) 
 
 #### Delete
 
 Deletes the item especified from the `programming_language` table. There's no need to specify the data deleted in the Request Body, with the id on the endpoint it's enough.   
+
+```
+http://127.0.0.1:8080/programming-languages/delete/{id}
+```
 
 ![Endpoint delete](./docs/endpoint_delete.png) 

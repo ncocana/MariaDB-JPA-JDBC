@@ -18,11 +18,11 @@ public class ProgrammingLanguageController {
     private ProgLangIMPL impl;
 
     @PostMapping
-    @RequestMapping(value = "create/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> createLanguage(@PathVariable int id, @RequestBody ProgrammingLanguage language) {
-        ProgrammingLanguage existingLanguage = this.impl.readData(id);
+    @RequestMapping(value = "create", method = RequestMethod.POST)
+    public ResponseEntity<?> createLanguage(@RequestBody ProgrammingLanguage language) {
+        ProgrammingLanguage existingLanguage = this.impl.readData(language.getId());
         if (existingLanguage != null) {
-            return ResponseEntity.badRequest().body("Invalid ID: a ProgrammingLanguage object with ID " + id + " already exists.");
+            return ResponseEntity.badRequest().body("Invalid ID: a ProgrammingLanguage object with ID " + language.getId() + " already exists.");
         }
         ProgrammingLanguage createdLanguage = this.impl.createData(language);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdLanguage);

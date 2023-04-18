@@ -44,7 +44,7 @@ public class ProgLangControllerTest {
         language.setUserRating(new UserRating(8));
         language.setDevRating(new DeveloperRating(8));
 
-        ResponseEntity<?> response = controller.createLanguage(language.getId(), language);
+        ResponseEntity<?> response = controller.createLanguage(language);
 
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -54,7 +54,7 @@ public class ProgLangControllerTest {
         assertEquals(language.getId(), createdLanguage.getId());
         assertEquals(language.getName(), createdLanguage.getName());
 
-        ResponseEntity<?> badResponse = controller.createLanguage(createdLanguage.getId(), createdLanguage);
+        ResponseEntity<?> badResponse = controller.createLanguage(createdLanguage);
 
         assertNotEquals(response, badResponse);
     }
@@ -81,7 +81,7 @@ public class ProgLangControllerTest {
         language.setUserRating(new UserRating(8));
         language.setDevRating(new DeveloperRating(8));
 
-        ResponseEntity<?> createdResponse = controller.createLanguage(language.getId(), language);
+        ResponseEntity<?> createdResponse = controller.createLanguage(language);
 
         assertEquals(HttpStatus.CREATED, createdResponse.getStatusCode());
 
@@ -107,7 +107,7 @@ public class ProgLangControllerTest {
         language.setUserRating(new UserRating(8));
         language.setDevRating(new DeveloperRating(8));
 
-        ResponseEntity<?> createdResponse = controller.createLanguage(language.getId(), language);
+        ResponseEntity<?> createdResponse = controller.createLanguage(language);
 
         ProgrammingLanguage createdLanguage = (ProgrammingLanguage) createdResponse.getBody();
 

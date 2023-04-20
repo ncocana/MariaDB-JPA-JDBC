@@ -56,7 +56,7 @@ The table `programming_language` have 4 fields:
 
 ## How to install
 
-You will need to have already installed: `Git`, `Java 19`, `Maven`, and `MariaDB`.   
+You will need to have already installed: `Git`, and `Docker`.   
 
 1. First, open the terminal and go to the folder in which you desire to clone the repository. When you're inside, clone the repository:
 
@@ -64,30 +64,54 @@ You will need to have already installed: `Git`, `Java 19`, `Maven`, and `MariaDB
     git clone https://github.com/ncocana/MariaDB-JPA-JDBC.git
     ```
 
-2. Open the MariaDB Client/Terminal and create a database:   
+2. Open the terminal and build the Docker image of the application by running the following command. This will create a Docker image with the tag "mariadb-springboot". Make sure you're in the same folder as the files' project before proceeding.   
+   
+    ```
+    docker build -t mariadb-springboot .
+    ```
 
-    ![Create database](./docs/create_database.png)   
+    You can view the image created with the command: `docker images`.
 
-3. Now create an user and grant them privileges:
+    To remove the image, get its ID or name with the command from above and do this command: `docker rmi [image's ID or name]`. Using a random ID as example, the command would be: `docker rmi ac6d8c993fa7`.
 
-    ![Create user](./docs/create_user.png)  
+3. Now, run the Docker compose file using the following command:
 
-4. You have two options now. The first one it's to use the JPA App. This one it's constructed to create the tables, introduce the default data in the rating tables, and insert some mock data on the `programming_language` table with example on how to show the data through the terminal, update, and delete it. And finally close the connection when finishing executing.   
+    ```
+    docker-compose up
+    ```
 
-    If you wish to use this option, you would have to personalize the code yourself, which can be cumbersome and user-friendly at the long run. The JPA App is also configuring to drop the table and create anew each time it executes itself. Therefore, I wouldn't recommend this option unless you wish to experiment with the code yourself.   
+    This will create the needed containers (one for the MariaDB database, and another for the application using the image you built before) and a network for the containers to connect with each other, as well as create execute an `schema.sql` file to create the database that will be used by the application inside MariaDB. The application container is programmed to automatically start the Spring Boot application (`AppSpringBoot.java`) when created. But you can still execute the `AppJPA.java` file if you get inside the container and use the command `mvn exec:java`. Further use of those will be explained in detail below.   
 
-    To execute it, run the `AppJPA.java` file. The output should be similar to this:   
+    **IMPORTANT:** It's highly possible that you will get an error when executing for the first time `docker-compose up`. This seems to be due to the app being initialized before the database, resulting in the app not being able to get a connection because the database has not been properly initiated yet. To solve this, you only need to do `docker-compose up` a second time and it will work succesfully this time.   
 
-    ![Output 1](./docs/output_01.png)  
-    ![Output 2](./docs/output_02.png)  
+    To cancel to stop the containers, pulse Ctrl + C. Then you can delete the containers and its network with:
 
-5. The second option it's use the Spring Boot App, which as the name indicates, it uses the Spring Boot framework. For this, you can execute the `AppSpringBoot.java` file directly or write on the terminal the command: `mvn spring-boot:run`.
+    ```
+    docker-compose down
+    ```
+
+    Additionally, if you don't want to see the container's logs, you can run the Docker compose file in the background of the terminal with: `docker-compose up -d`. The proccess to delete the containers and its network is the same as above.   
+
+    You can view the container created with the command: `docker ps -a` (this will show you all the containers, running or not. To view only the ones running at the moment: `docker ps`).
+
+    You can enter the container with: `docker exec -it mariadb-springboot bash`.
 
 ## How to use
 
 ### AppJPA in the terminal
 
-As its use have already been explained above, all that remains to know is how to configure the database connection. For this, you will need to go to the `persistance.xml` file in `src/main/resources/META-INF` folder, where you can configure the user's name, password, URL for the MariaDB database connection, its action upon executing the `AppJPA.java` file (for default, it's configured to drop and create the database anew; if you wish to just create the database, you will need to change it to `create`), and similar.   
+The JPA App it's constructed to create the tables, introduce the default data in the rating tables, and insert some mock data on the `programming_language` table with example on how to show the data through the terminal, update, and delete it. And finally close the connection when finishing executing. The JPA App is also configured to drop the table and create anew each time it executes itself.   
+
+If you wished to use this option to connect to the database, you would have to personalize the code yourself, which can be cumbersome and not-user-friendly at the long run. It's due to this that we ended up using Spring Boot to create a more user-friendly use of the application. **However,** due to how the Spring Boot App is constructed, **IS NECESSARY** to execute the JPA App before being able to use the Spring Boot App. This is because the JPA App is the responsible for creating the tables `dev_rating` and `user_rating`, which are necessary for the Spring Boot App to work properly as it only operates inside the `programming_language` table.   
+
+However again, the Docker container of the app is configured to execute not only `AppJPA.java` to create the neccessary tables, but also initiate the Spring Boot App through the `AppSpringBoot.java` file. The only thing you need to do is the `docker-compose up` command. As stated above, you may have a problem the first time doing `docker-compose up`, but it will be solved after doing it a second time. This problem seems to have surged after configuring the `docker-compose.yaml` file to execute both Apps' commands, instead of only executing the Spring Boot App command through the Dockerfile. However, as a connection to the database was needed to execute succesfully the JPA App, it was a neccessary decision.   
+
+All that remains to know is how to configure the database connection. For this, you will need to go to the `persistance.xml` file in `src/main/resources/META-INF` folder, where you can configure the user's name, password, URL for the MariaDB database connection, its action upon executing the `AppJPA.java` file (for default, it's configured to drop and create the database anew; if you wish to just create the database, you will need to change it to `create`; however, there's a volume configured in the `docker-compose.yaml` to allow the data of the database to persist even if the database container is deleted, so it doesn't really matter if it configured to drop or not, as the data will be rewritted when creating the container a second time due to the volume containing the database's data previous to the container being deleted or stopped), and similar.   
+
+To execute `AppJPA.java`, get inside the container with `docker exec -it mariadb-springboot bash` and execute `mvn exec:java`. The output should be similar to this (that's if you manage to find it in the sea of logs...):   
+
+![Output 1](./docs/output_01.png)  
+![Output 2](./docs/output_02.png)  
 
 ### AppSpringBoot in Postman and Endpoints
 

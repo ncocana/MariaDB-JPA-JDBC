@@ -52,3 +52,7 @@ replay_pid*
 # VSCODE
 
 .vscode
+
+
+# Database data
+data

@@ -95,7 +95,7 @@ You will need to have already installed: `Git`, and `Docker`.
 
     ![Docker compose error](./docs/docker_compose_error.png) 
 
-    To cancel to stop the containers, pulse Ctrl + C. Then you can delete the containers and its network with:
+    To stop the containers, pulse Ctrl + C. Then you can delete the containers and its network with:
 
     ```
     docker-compose down

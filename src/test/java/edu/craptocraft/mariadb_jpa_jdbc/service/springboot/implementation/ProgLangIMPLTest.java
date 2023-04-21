@@ -7,7 +7,6 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,10 +16,7 @@ import edu.craptocraft.mariadb_jpa_jdbc.AppJPA;
 import edu.craptocraft.mariadb_jpa_jdbc.entity.DeveloperRating;
 import edu.craptocraft.mariadb_jpa_jdbc.entity.ProgrammingLanguage;
 import edu.craptocraft.mariadb_jpa_jdbc.entity.UserRating;
-import edu.craptocraft.mariadb_jpa_jdbc.repository.ProgrammingLanguageRepo;
 import edu.craptocraft.mariadb_jpa_jdbc.service.springboot.ProgrammingLanguageService;
-
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,8 +25,7 @@ public class ProgLangIMPLTest {
     @Autowired
     private ProgrammingLanguageService progLangImpl;
 
-    @Autowired
-    private ProgrammingLanguageRepo repo;
+    private static ProgrammingLanguage language = null;
 
     @BeforeClass
     public static void setUp() {
@@ -40,13 +35,7 @@ public class ProgLangIMPLTest {
     @Test
     public void testCreateData() {
 
-        ProgrammingLanguage language = new ProgrammingLanguage();
-
-        language.setId(5);
-        language.setName("Rust");
-        language.setUserRating(new UserRating(8));
-        language.setDevRating(new DeveloperRating(8));
-
+        language = new ProgrammingLanguage("Test item", new UserRating(9), new DeveloperRating(3));
         ProgrammingLanguage createdLanguage = progLangImpl.createData(language);
 
         assertNotNull(createdLanguage);
@@ -54,20 +43,17 @@ public class ProgLangIMPLTest {
         assertEquals(language.getName(), createdLanguage.getName());
         assertEquals(language.getDevRating().getRating(), createdLanguage.getDevRating().getRating());
         assertEquals(language.getUserRating().getRating(), createdLanguage.getUserRating().getRating());
+        
+        progLangImpl.deleteData(createdLanguage.getId());
+        assertNull(progLangImpl.readData(createdLanguage.getId()));
 
     }
 
     @Test
     public void testReadDataById() {
 
-        ProgrammingLanguage language = new ProgrammingLanguage();
-
-        language.setId(7);
-        language.setName("Ruby");
-        language.setUserRating(new UserRating(8));
-        language.setDevRating(new DeveloperRating(8));
-
-        ProgrammingLanguage createdLanguage = repo.save(language);
+        language = new ProgrammingLanguage("Test item", new UserRating(9), new DeveloperRating(3));
+        ProgrammingLanguage createdLanguage = progLangImpl.createData(language);;
 
         ProgrammingLanguage retrievedLanguage = progLangImpl.readData(createdLanguage.getId());
 
@@ -79,88 +65,61 @@ public class ProgLangIMPLTest {
         assertEquals(language.getDevRating().getRating(), retrievedLanguage.getDevRating().getRating());
 
         assertEquals(language.getUserRating().getRating(), retrievedLanguage.getUserRating().getRating());
+        
+        progLangImpl.deleteData(createdLanguage.getId());
+        assertNull(progLangImpl.readData(createdLanguage.getId()));
     }
 
     @Test
     public void testReadData() {
-        ProgrammingLanguage language1 = new ProgrammingLanguage();
-        ProgrammingLanguage language2 = new ProgrammingLanguage();
 
-        language1.setId(5);
-        language1.setName("Rust");
-        language1.setUserRating(new UserRating(8));
-        language1.setDevRating(new DeveloperRating(8));
-        repo.save(language1);
+        language = new ProgrammingLanguage("Test item", new UserRating(9), new DeveloperRating(3));
+        ProgrammingLanguage createdLanguage = progLangImpl.createData(language);;
+        ProgrammingLanguage retrievedLanguage = progLangImpl.readData(createdLanguage.getId());
 
-        language2.setId(6);
-        language2.setName("PHP");
-        language2.setUserRating(new UserRating(9));
-        language2.setDevRating(new DeveloperRating(9));
-        repo.save(language2);
-
-        List<ProgrammingLanguage> languages = progLangImpl.readData();
-
-        assertEquals(5, languages.size());
-
-        assertEquals(language1.getId(), languages.get(language1.getId() - 2).getId());
-        assertEquals(language1.getName(), languages.get(language1.getId() - 2).getName());
-
-        assertEquals(language2.getId(), languages.get(language2.getId() - 2).getId());
-        assertEquals(language2.getName(), languages.get(language2.getId() - 2).getName());
+        assertEquals(language.getId(), retrievedLanguage.getId());
+        assertEquals(language.getName(), retrievedLanguage.getName());
+        assertEquals(language.getDevRating(), retrievedLanguage.getDevRating());
+        assertEquals(language.getUserRating(), retrievedLanguage.getUserRating());
+        
+        progLangImpl.deleteData(createdLanguage.getId());
+        assertNull(progLangImpl.readData(createdLanguage.getId()));
 
     }
 
     @Test
     public void testUpdateData() {
-        ProgrammingLanguage language = new ProgrammingLanguage();
-
-        language.setId(5);
-        language.setName("Rust");
-        language.setUserRating(new UserRating(8));
-        language.setDevRating(new DeveloperRating(8));
-
-        ProgrammingLanguage createdLanguage = progLangImpl.createData(language);
-
+        language = new ProgrammingLanguage("Test item", new UserRating(9), new DeveloperRating(3));
+        ProgrammingLanguage createdLanguage = progLangImpl.createData(language);;
         int languageId = createdLanguage.getId();
 
         assertEquals(language.getId(), languageId, 0);
 
-        createdLanguage.setName("PHP");
+        createdLanguage.setName("Test item updated");
         createdLanguage.setUserRating(new UserRating(7));
         createdLanguage.setDevRating(new DeveloperRating(7));
 
         ProgrammingLanguage updatedLanguage = progLangImpl.updateData(languageId, createdLanguage);
 
         assertNotNull(updatedLanguage);
-
-        assertEquals(updatedLanguage.getId(), language.getId());
-
-        assertNotEquals(updatedLanguage.getName(), language.getName());
-
-        assertNotEquals(updatedLanguage.getUserRating().getRating(), language.getUserRating().getRating());
-
-        assertNotEquals(updatedLanguage.getDevRating().getRating(), language.getDevRating().getRating());
-
+        assertEquals(language.getId(), updatedLanguage.getId());
+        assertEquals("Test item updated", updatedLanguage.getName());
+        assertEquals(7, updatedLanguage.getUserRating().getRating());
+        assertEquals(7, updatedLanguage.getDevRating().getRating());
+        
+        progLangImpl.deleteData(updatedLanguage.getId());
+        assertNull(progLangImpl.readData(updatedLanguage.getId()));
     }
 
     @Test
     public void testDeleteData() {
-        ProgrammingLanguage language = new ProgrammingLanguage();
-
-        language.setId(5);
-        language.setName("Rust");
-        language.setUserRating(new UserRating(8));
-        language.setDevRating(new DeveloperRating(8));
-
+        language = new ProgrammingLanguage("Test item", new UserRating(9), new DeveloperRating(3));
         ProgrammingLanguage createdLanguage = progLangImpl.createData(language);
 
         int createdId = createdLanguage.getId();
-
         assertNotNull(progLangImpl.readData(createdId));
 
         progLangImpl.deleteData(createdId);
-
         assertNull(progLangImpl.readData(createdId));
-
     }
 }

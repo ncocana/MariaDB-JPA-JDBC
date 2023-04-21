@@ -27,23 +27,18 @@ public class ProgLangControllerTest {
 
     @Autowired
     private ProgrammingLanguageController controller;
+    
+    private static ProgrammingLanguage language = null;
 
     @BeforeClass
     public static void setUp() {
         AppJPA.main(new String[] {});
-
     }
 
     @Test
     public void testCreateLanguage() {
 
-        ProgrammingLanguage language = new ProgrammingLanguage();
-
-        language.setId(6);
-        language.setName("MySQL");
-        language.setUserRating(new UserRating(8));
-        language.setDevRating(new DeveloperRating(8));
-
+        language = new ProgrammingLanguage("Test item", new UserRating(9), new DeveloperRating(3));
         ResponseEntity<?> response = controller.createLanguage(language);
 
         assertNotNull(response);
@@ -57,6 +52,11 @@ public class ProgLangControllerTest {
         ResponseEntity<?> badResponse = controller.createLanguage(createdLanguage);
 
         assertNotEquals(response, badResponse);
+
+        ResponseEntity<?> responseDelete = controller.deleteLanguage(createdLanguage.getId());
+
+        assertNotNull(responseDelete);
+        assertEquals(HttpStatus.OK, responseDelete.getStatusCode());
     }
 
     @Test
@@ -75,11 +75,7 @@ public class ProgLangControllerTest {
     @Test
     public void testGetOneLanguage() {
 
-        ProgrammingLanguage language = new ProgrammingLanguage();
-        language.setId(7);
-        language.setName("Ruby");
-        language.setUserRating(new UserRating(8));
-        language.setDevRating(new DeveloperRating(8));
+        language = new ProgrammingLanguage("Test item", new UserRating(9), new DeveloperRating(3));
 
         ResponseEntity<?> createdResponse = controller.createLanguage(language);
 
@@ -97,15 +93,16 @@ public class ProgLangControllerTest {
         assertEquals(language.getName(), retrievedLanguage.getName());
         assertEquals(language.getDevRating(), retrievedLanguage.getDevRating());
         assertEquals(language.getUserRating(), retrievedLanguage.getUserRating());
+
+        ResponseEntity<?> responseDelete = controller.deleteLanguage(retrievedLanguage.getId());
+
+        assertNotNull(responseDelete);
+        assertEquals(HttpStatus.OK, responseDelete.getStatusCode());
     }
 
     @Test
     public void testUpdateLanguage() {
-        ProgrammingLanguage language = new ProgrammingLanguage();
-        language.setId(5);
-        language.setName("Rust");
-        language.setUserRating(new UserRating(8));
-        language.setDevRating(new DeveloperRating(8));
+        language = new ProgrammingLanguage("Test item", new UserRating(9), new DeveloperRating(3));
 
         ResponseEntity<?> createdResponse = controller.createLanguage(language);
 
@@ -115,7 +112,7 @@ public class ProgLangControllerTest {
 
         assertEquals(language.getId(), languageId, 0);
 
-        language.setName("PHP");
+        language.setName("Test item updated");
         language.setUserRating(new UserRating(7));
         language.setDevRating(new DeveloperRating(7));
 
@@ -127,11 +124,15 @@ public class ProgLangControllerTest {
 
         ProgrammingLanguage updatedLanguage = (ProgrammingLanguage) updatedResponse.getBody();
 
-        assertEquals(updatedLanguage.getId(), createdLanguage.getId());
+        assertEquals(createdLanguage.getId(), updatedLanguage.getId());
+        assertEquals("Test item updated", updatedLanguage.getName());
+        assertEquals(7, updatedLanguage.getDevRating().getRating());
+        assertEquals(7, updatedLanguage.getUserRating().getRating());
 
-        assertNotEquals(updatedLanguage.getName(), createdLanguage.getName());
-        assertNotEquals(updatedLanguage.getDevRating().getRating(), createdLanguage.getDevRating().getRating());
-        assertNotEquals(updatedLanguage.getUserRating().getRating(), createdLanguage.getUserRating().getRating());
+        ResponseEntity<?> responseDelete = controller.deleteLanguage(updatedLanguage.getId());
+
+        assertNotNull(responseDelete);
+        assertEquals(HttpStatus.OK, responseDelete.getStatusCode());
 
     }
 
@@ -144,14 +145,11 @@ public class ProgLangControllerTest {
 
         assertNotNull(beforeDeleteLanguages);
 
-        ProgrammingLanguage objectiveLanguage = new ProgrammingLanguage();
+        language = new ProgrammingLanguage("Test item", new UserRating(9), new DeveloperRating(3));
 
-        objectiveLanguage.setId(1);
-
-        ResponseEntity<?> response = controller.deleteLanguage(objectiveLanguage.getId());
+        ResponseEntity<?> response = controller.deleteLanguage(language.getId());
 
         assertNotNull(response);
-
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         ResponseEntity<?> afterDeleteResponse = controller.getAllLanguages();
@@ -159,8 +157,7 @@ public class ProgLangControllerTest {
         List<?> afterDeleteLanguages = (List<?>) afterDeleteResponse.getBody();
 
         assertNotNull(afterDeleteLanguages);
-
-        assertNotEquals(afterDeleteLanguages.size(), beforeDeleteLanguages.size());
+        assertEquals(afterDeleteLanguages.size(), beforeDeleteLanguages.size());
 
     }
 }

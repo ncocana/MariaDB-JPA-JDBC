@@ -14,6 +14,7 @@
       - [Get one](#get-one)
       - [Update](#update)
       - [Delete](#delete)
+  - [Testing](#testing)
 
 ## Introduction
 
@@ -70,9 +71,11 @@ You will need to have already installed: `Git`, and `Docker`.
     docker build -t mariadb-springboot .
     ```
 
+    ![Docker build](./docs/docker_build.png) 
+
     You can view the image created with the command: `docker images`.
 
-    To remove the image, get its ID or name with the command from above and do this command: `docker rmi [image's ID or name]`. Using a random ID as example, the command would be: `docker rmi ac6d8c993fa7`.
+    To remove the image, get its ID or name with the command from above and do this command: `docker rmi [image's ID or name]`. Using a random ID as example, the command would be as follow: `docker rmi ac6d8c993fa7`.
 
 3. Now, run the Docker compose file using the following command:
 
@@ -80,9 +83,17 @@ You will need to have already installed: `Git`, and `Docker`.
     docker-compose up
     ```
 
-    This will create the needed containers (one for the MariaDB database, and another for the application using the image you built before) and a network for the containers to connect with each other, as well as create execute an `schema.sql` file to create the database that will be used by the application inside MariaDB. The application container is programmed to automatically start the Spring Boot application (`AppSpringBoot.java`) when created. But you can still execute the `AppJPA.java` file if you get inside the container and use the command `mvn exec:java`. Further use of those will be explained in detail below.   
+    ![Docker compose up](./docs/docker_compose_up.png) 
 
-    **IMPORTANT:** It's highly possible that you will get an error when executing for the first time `docker-compose up`. This seems to be due to the app being initialized before the database, resulting in the app not being able to get a connection because the database has not been properly initiated yet. To solve this, you only need to do `docker-compose up` a second time and it will work succesfully this time.   
+    This will create the needed containers (one for the MariaDB database, and another for the application using the image you built before) and a network for the containers to connect with each other, as well as execute an `schema.sql` file to create the database that will be used by the application inside MariaDB. The application container is programmed to automatically run the JPA App to create the tables and insert some mock data, and then start the Spring Boot application (`AppSpringBoot.java`) when created. But you can still execute the `AppJPA.java` file separately if you get inside the container and use the command `mvn exec:java`. Further use of those will be explained in detail below.   
+
+    You will know the containers are fully and ly created when you see a log saying "`Started AppSpringBoot`":
+
+    ![Spring Boot started](./docs/springboot_started.png) 
+
+    **IMPORTANT:** It's highly possible that you will get an error when executing for the first time `docker-compose up`. This seems to be due to the app being initialized before the database, resulting in the app not being able to get a connection because the database has not been properly initiated yet. To solve this, you only need to do `docker-compose up` a second time and it will work succesfully this time. The error you will find will be this:   
+
+    ![Docker compose error](./docs/docker_compose_error.png) 
 
     To cancel to stop the containers, pulse Ctrl + C. Then you can delete the containers and its network with:
 
@@ -119,7 +130,17 @@ To configure the user's name, password, URL for the MariaDB database connection,
 
 You can test the endpoints in Postman:   
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.gw.postman.com/run-collection/26400016-52e5e2b9-d189-47fb-b0c7-dad85356eaa0?action=collection%2Ffork&collection-url=entityId%3D26400016-52e5e2b9-d189-47fb-b0c7-dad85356eaa0%26entityType%3Dcollection%26workspaceId%3Db6e3eeac-770e-4cce-8f61-a31866271e87)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.gw.postman.com/run-collection/26400016-52e5e2b9-d189-47fb-b0c7-dad85356eaa0?action=collection%2Ffork&collection-url=entityId%3D26400016-52e5e2b9-d189-47fb-b0c7-dad85356eaa0%26entityType%3Dcollection%26workspaceId%3Db6e3eeac-770e-4cce-8f61-a31866271e87)   
+
+If you don't have Postman, you can also use the command `curl` in the terminal (if you're on Windows, maybe you will need to use the Git Bash terminal) to execute the endpoints. Here are some examples:
+
+```
+curl -X GET http://127.0.0.1:8080/programming-languages/get/all
+curl -X GET http://127.0.0.1:8080/programming-languages/get/{id}
+curl -d "{\"name\": \"Python\", \"userRating\": 9, \"devRating\": 8}" -H "Content-Type: application/json" -X POST http://127.0.0.1:8080/programming-languages/create
+curl -d "{\"name\": \"Python\", \"userRating\": 7, \"devRating\": 6}" -H "Content-Type: application/json" -X PUT http://127.0.0.1:8080/programming-languages/update/{id}
+curl -X DELETE http://127.0.0.1:8080/programming-languages/delete/{id}
+```
 
 #### Create
 
@@ -176,3 +197,21 @@ http://127.0.0.1:8080/programming-languages/delete/{id}
 ```
 
 ![Endpoint delete](./docs/endpoint_delete.png) 
+
+## Testing
+
+To run the tests, you will need to run the `docker-compose up` command to start the containers and then enter inside the app container with this command:   
+
+```
+docker exec -it mariadb-springboot bash
+```
+
+Once inside, the only thing you need to do is run the maven command to start the tests:   
+
+```
+mvn test
+```
+
+This will run all the tests cases created and output if they were successful or not.   
+
+![Docker mvn test](./docs/mvn_test_docker.png) 
